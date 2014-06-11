@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+    <!-- Load the configuration file of Spring container from the specify path. -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
+    <!-- The context param is quoted to obtain the path of Spring configuration file.
+    And this listener is responsible to start up the Spring container automatically as the web container launch,
+     which is provided as a listener for the web container.
+
+     Note: log4j.properties, the log configuration file is needed to put down the proper path, so that enable the log engine. -->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+
+    <!-- Some relative info about Spring MVC has needed to be configured, which intercept and capture the request by one url -->
+    <!-- Here declare one Servlet. And there is one configuration belonged to Spring MVC, with which there is a contract when
+    this Servlet's name is made. That means use this format: <Servlet name>-servlet.xml. For instance, here the name of Servlet
+     is baobaotao. So one Spring MVC configuration, baobaotao-servlet.xml, must be down in /WEB-INF, which don't declare in
+      context ConfigLocation, in that the Servlet of Spring MVC will assemble the other configuration file automatically.-->
+    <servlet>
+        <servlet-name>baobaotao</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- Define the mapping for Servlet's URL. For example, here all urls will be intercepted and captured by 'baobaotao servlet'
+    using '.html' as those suffix. ‘.html’ is suffix of static web, which can make a detour unable some search engine for increaing
+    the possibility of being accept. First search the aim process controller according to the URL of request, after intercepted
+    by Spring MVC. And the request param is encapsulated to one command object, which will be passed to Controller with url together.
+    At last the responding controller call the service bean of Spring container to do work and return ModelAndView. -->
+    <servlet-mapping>
+        <servlet-name>baobaotao</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+</web-app>

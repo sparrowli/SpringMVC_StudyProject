@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+<!-- Scan the class package, translate the class annotated to Bean, and have the bean injected. -->
+<context:component-scan base-package="com.baobaotao.dao"/>
+<context:component-scan base-package="com.baobaotao.service"/>
+
+<!-- configuration the DataSource, which is needed to add into JDBCTemplate to get and return connection. -->
+<!-- Define a datasource by the open source datasource method of DBCP. After this, defines some property -->
+<!-- like the class of DB driver, connect the DB's url, and username, password -->
+
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+      destroy-method="close"
+      p:driverClassName="com.mysql.jdbc.Driver"
+      p:url="jdbc:mysql://localhost:3306/sampledb"
+      p:username="root"
+      p:password="1234" />
+
+<!-- Define one JdbcTemplate Bean. And inject the Bean by the IoC of the Spring Container.  -->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+      p:dataSource-ref="dataSource" />
+
+<!-- The code of transaction management don't need to be appearance, but there are some way to
+     tell Spring which Service Layer class need to work in transaction env and the content of transaction's regulars.
+     So that following above info Spring add the function automatically transaction management.-->
+
+<!-- Define a transaction manager based on dataSource, to hanlde the management of Declare Transaction. -->
+<bean id="transactionManager"
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+      p:dataSource-ref="dataSource" />
+
+<!-- By the space name grammar of aop & tx, add transaction enhancement for all methods of the package Service via the way of aop  -->
+<!-- Details in chapter 10 for more  -->
+<aop:config proxy-target-class="true">
+    <aop:pointcut id="serviceMethod"
+                  expression=" execution(* com.baobaotao.service..*(..))" />
+    <aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
+</aop:config>
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <tx:method name="*" />
+    </tx:attributes>
+</tx:advice>
+</beans>
