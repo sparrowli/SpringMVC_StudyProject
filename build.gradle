@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: "jetty"
 
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     mavenCentral()
 }
