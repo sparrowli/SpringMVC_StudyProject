@@ -9,6 +9,7 @@ import com.baobaotao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,33 +17,43 @@ import java.util.Date;
 
 @Controller
 public class RegisterController {
-
     @Autowired
     private RegisterService registerService;
 
-    @RequestMapping(value = "/registerCheck.html")
-    public ModelAndView registerCheck(HttpServletRequest request, RegisterCommand registerCommand) {
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/register.html")
+    public String registerPage(){
+        return "register";
+    }
+
+    @RequestMapping(value = "/userCreated.html", method= RequestMethod.POST)
+    public ModelAndView registerCheck(HttpServletRequest request, User user) {
+
+        System.out.println(user.getPassword() + "===========" + user.getVerifyPassword());
         boolean isValidRegister =
-                registerService.hasMatchRegisterRegular(registerCommand.getUserName(),
-                        registerCommand.getPassword(),
-                        registerCommand.getVerifyPassword());
+                registerService.hasMatchRegisterRegular(user);
         if (!isValidRegister) {
             // First param is the logic name of view;
             // The other params is Data Model name and Data Model Object.
             // The model object put the model name as a param name into the property of request.
-            return new ModelAndView("register", "error", "用户名或密码错误。");
+            return new ModelAndView("register", "error", "两次密码输入不一致，请重新输入。");
         } else {
-            User user = new User();
-            user.setUserName(registerCommand.getUserName());
-            user.setPassword(registerCommand.getPassword());
             user.setLastIp(request.getLocalAddr());
             user.setLastVisit(new Date());
-            registerService.registerSuccess(user);
+            if (userService.findUserByUserName(user.getUserName()) != null) {
+                return new ModelAndView("register", "error", "该用户名已被使用，请重新输入。");
+            }
+
+            registerService.createUser(user);
             request.getSession().setAttribute("user", user);
             // ModelAndView contain both info of view and model data for render the view.
-            return new ModelAndView("login");
+            return new ModelAndView("createSuccess", "user", user);
         }
 
     }
+
+
 
 }

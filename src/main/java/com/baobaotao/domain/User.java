@@ -12,6 +12,8 @@ public class User implements Serializable{
 
     private String password;
 
+    private String verifyPassword;
+
     private int credits;
 
     private String lastIp;
@@ -58,6 +60,13 @@ public class User implements Serializable{
         this.password = password;
     }
 
+    public String getVerifyPassword() {
+        return verifyPassword;
+    }
+
+    public void setVerifyPassword(String verifyPassword) {
+        this.verifyPassword = verifyPassword;
+    }
     public int getCredits() {
         return credits;
     }

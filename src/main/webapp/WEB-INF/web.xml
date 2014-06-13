@@ -21,13 +21,14 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-    
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
-
-
-    <!-- Some relative info about Spring MVC has needed to be configured, which intercept and capture the request by one url -->
+    <!-- 
+     <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+     </listener>
+     -->
+ 
+ 
+     <!-- Some relative info about Spring MVC has needed to be configured, which intercept and capture the request by one url -->
     <!-- Here declare one Servlet. And there is one configuration belonged to Spring MVC, with which there is a contract when
     this Servlet's name is made. That means use this format: <Servlet name>-servlet.xml. For instance, here the name of Servlet
      is baobaotao. So one Spring MVC configuration, baobaotao-servlet.xml, must be down in /WEB-INF, which don't declare in

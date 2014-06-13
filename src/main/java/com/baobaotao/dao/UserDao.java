@@ -57,11 +57,10 @@ public class UserDao {
     }
 
     public void insertRegisterUserInfo(User user) {
-        String sqlStr = " INSERT INTO t_user SET user_name=?,password=?,last_visit=?,last_ip=?,credits=? "
-                + " user_id=>";
+        String sqlStr = " INSERT INTO t_user SET user_name=?,password=?,last_visit=?,last_ip=?,credits=? ";
         jdbcTemplate.update(sqlStr, new Object[] { user.getUserName(),
                 user.getPassword(),
                 user.getLastVisit(),
-                user.getLastIp(),user.getCredits(),user.getUserId()});
+                user.getLastIp(),user.getCredits()});
     }
 }

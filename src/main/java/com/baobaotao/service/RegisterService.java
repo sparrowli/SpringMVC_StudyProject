@@ -16,9 +16,6 @@ import java.util.regex.Pattern;
 
 @Service
 public class RegisterService {
-    private Pattern pattern;
-    private Matcher matcher;
-    private static final String USERNAME_PATTERN ="^[a-z0-9_-]{3,15}$";
 
     @Autowired
     private UserDao userDao;
@@ -26,26 +23,37 @@ public class RegisterService {
     @Autowired
     private LoginLogDao loginLogDao;
 
-    public boolean hasMatchRegisterRegular(String userName, String password, String verifyPassword) {
 
-        if ( !password.equals(verifyPassword) ) {
+    public boolean hasMatchRegisterRegular(User user) {
+        Pattern pattern;
+        Matcher matcher;
+        final String USERNAME_PATTERN ="^[a-z0-9_-]{3,15}$";
+
+        System.out.println("xxxxxxxxxxxxxxxxxxx" + user.getUserName() + "=============" + user.getPassword()
+        + user.getVerifyPassword());
+        if ( !user.getPassword().equals( user.getVerifyPassword() ) ) {
+
+            System.out.println(user.getPassword() + "=========" + user.getVerifyPassword());
             return false;
         }
-
         pattern = Pattern.compile(USERNAME_PATTERN);
-        matcher = pattern.matcher(userName);
+        matcher = pattern.matcher(user.getUserName());
         return matcher.matches();
     }
 
     // This class organize two Dao to do one data transaction operation, that is update the table, t_user,
 // and add one record into the table, t_login_log.
 // All those transaction operations need to be configured by Spring declare transaction configuration.
-    public void registerSuccess(User user) {
+    public void createUser(User user) {
+
         user.setCredits(5);
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(user.getUserId());
         loginLog.setIp(user.getLastIp());
         loginLog.setLoginDate(user.getLastVisit());
+        System.out.println("xxxxxxxxxxxxxxxxxxx" + user.getUserId() + "=============" + user.getLastIp()
+                + user.getLastVisit());
+
         userDao.insertRegisterUserInfo(user);
         loginLogDao.insertLoginLog(loginLog);
     }

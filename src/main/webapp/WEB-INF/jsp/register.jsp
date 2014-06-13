@@ -3,22 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 	<head>
-		<title>Welcome to baobaotao Web</title>
+		<title>Welcome, new Customer!</title>
 	</head>
 	<body>
-		<c:if test="${!empty error}">
-	        <font color="red"><c:out value="${error}" /></font>
-		</c:if>
-		<form action="<c:url value="registerCheck.html"/>" method="post">
-			用户名：
-			<input type="text" name="userName">
-			<br>
-			密 码：
-			<input type="password" name="password">
-			<br>
-			重新输入密码：
-			<input type="password" name="password">
-			<br>
+	  <form method="post" action="<c:url value="/userCreated.html"/>">
+
+	    <table>
+	        <tr>
+	          <td>UserName: </td>
+	          <td><input type="text" name="userName"/></td>
+	        </tr>
+	        <tr>
+              <td>Password: </td>
+              <td><input type="password" name="password"/></td>
+            </tr>
+            <tr>
+              <td>VerifyPassword: </td>
+              <td><input type="password" name="verifyPassword"/></td>
+            </tr>
+            <tr>
+              <td colspan="2"><input type="submit" name="submit"/></td>
+            </tr>
+            </table>
 		</form>
+		<c:if test="${!empty error}">
+              	        <font color="red"><c:out value="${error}" /></font>
+        </c:if>
 	</body>
 </html>
