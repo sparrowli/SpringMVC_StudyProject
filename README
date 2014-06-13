@@ -1,0 +1,6 @@
+# install gradle, more details for see:
+# www.gradle.org/installation
+
+
+$ gradle jettyRun
+# run the loginRegister web app
