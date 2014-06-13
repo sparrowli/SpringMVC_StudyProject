@@ -42,7 +42,8 @@ public class RegisterController {
         } else {
             user.setLastIp(request.getLocalAddr());
             user.setLastVisit(new Date());
-            if (userService.findUserByUserName(user.getUserName()) != null) {
+
+            if (userService.findUserByUserName(user.getUserName()).getUserName() != null) {
                 return new ModelAndView("register", "error", "该用户名已被使用，请重新输入。");
             }
 

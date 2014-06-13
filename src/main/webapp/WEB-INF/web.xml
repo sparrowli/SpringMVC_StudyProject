@@ -11,6 +11,9 @@
         <param-value>WEB-INF/applicationContext.xml</param-value>
     </context-param>
 
+    <context-path>
+        /
+    </context-path>
     <!-- The context param is quoted to obtain the path of Spring configuration file.
     And this listener is responsible to start up the Spring container automatically as the web container launch,
      which is provided as a listener for the web container.

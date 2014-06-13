@@ -20,7 +20,7 @@
 			<input type="submit" value="登录" />
 			<input type="reset" value="重置" />
             <br>
-			<a href="/chapter2/register.html">注册</a>
+			<a href="/register.html">注册</a>
 			<br>
 			<image height="480" width="640" src="IMG_0072.JPG">
 	</body>
